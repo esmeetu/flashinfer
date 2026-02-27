@@ -69,7 +69,11 @@ class AllReduceFusionWorkspace(ABC):
         distributed/CUDA resources.
         """
         if not self._destroyed:
-            import warnings
+            try:
+                import warnings
+            except ImportError:
+                # Python is shutting down, import system is unavailable
+                return
 
             warnings.warn(
                 f"{self.__class__.__name__} was not explicitly destroyed. "
